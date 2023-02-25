@@ -9,4 +9,7 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('products/', include('products.urls')),
     path('users/', include('django.contrib.auth.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
