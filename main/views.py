@@ -13,7 +13,7 @@ def category_for_all(request):
 
 class CategoryView(View):
     def get(self, request, category_name):
-        category = Category.objects.filter(name=category_name)
+        category = get_object_or_404(Category, name=category_name)
         products = Products.objects.filter(category=category)
         return render(request, "category.html", {"category": category, 'products': products})
 
@@ -21,6 +21,9 @@ class CategoryView(View):
 class IndexView(View):
     def get(self, request):
         products = Products.objects.all()
+        q = request.GET.get('q', '')
+        if q:
+            products = products.filter(title__icontains=q)
         return render(request, "index.html", {'products': products})
 
 

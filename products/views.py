@@ -18,10 +18,10 @@ def new_product(request):
     elif request.method == "POST":
         form = NewProductForm(data=request.POST, files=request.FILES)
         if form.is_valid():
-            product = form.save(request)
+            products = form.save(request)
 
             for image in request.FILES.getlist("images"):
-                ProductsImage.objects.create(image=image, product=product)
+                ProductsImage.objects.create(image=image, products=products)
 
             messages.success(request, "Successfully Created!")
             return redirect('main:index')
@@ -30,6 +30,13 @@ def new_product(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Products, id=product_id)
+    if "recently_viewed" in request.session:
+        r_viewed = request.session["recently_viewed"]
+        if not product.id in r_viewed:
+            r_viewed.append(product.id)
+            request.session.modified = True
+    else:
+        request.session["recently_viewed"] = [product.id, ]
     return render(request, 'product_detail.html', {'product': product})
 
 
@@ -75,12 +82,12 @@ def product_delete(request, product_id):
 
 @login_required(login_url='login')
 def new_comment(request, product_id):
-    product = get_object_or_404(Products, id=product_id)
+    products = get_object_or_404(Products, id=product_id)
     if request.method == 'POST':
         Comment.objects.create(
             author=request.user,
-            product=product,
-            body=request.POST['body']
+            products=products,
+            body=request.POST['body'],
         )
         messages.info(request, 'Successfully Sended!')
         return redirect('products:detail', product_id)

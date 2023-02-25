@@ -62,8 +62,17 @@ class SavedView(LoginRequiredMixin, View):
     login_url = 'login'
     def get(self, request):
         saveds = Saved.objects.filter(author=request.user)
-        q = request.GET.get('q', '')
-        if q:
-            products = Products.objects.filter(title__icontains=q)
-            saveds = Saved.objects.filter(author=request.user, product__in=products)
         return render(request, 'saveds.html', {"saveds": saveds})
+
+
+class RecentlyViewedView(View):
+    def get(self, request):
+        if not "recently_viewed" in request.session:
+            products = []
+        else:
+            r_viewed = request.session["recently_viewed"]
+            products = Products.objects.filter(id__in=r_viewed)
+            # q = request.GET.get('q', '')
+            # if q:
+            #     products = products.filter(title__icontains=q)
+        return render(request, "recently_viewed.html", {'products': products})

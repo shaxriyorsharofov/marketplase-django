@@ -36,7 +36,7 @@ class ProductsImage(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     products = models.ForeignKey(Products, on_delete=models.CASCADE)
-    bio = models.CharField(max_length=150)
+    body = models.CharField(max_length=150)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

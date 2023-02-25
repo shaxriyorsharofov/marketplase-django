@@ -12,8 +12,8 @@
             {% for i in products %}
             <!-- Product Cart Start -->
             <div class="card border border-0 shadow-sm d-inline-block m-1 mt-3" style="width: 16.5rem;" >
-                {% if i.productimage_set.exists %}
-                <img height="200" class=" card-img-top" src="{{i.productimage_set.all.first.image.url}}" alt="">
+                {% if i.productsimage_set.exists %}
+                <img height="200" class=" card-img-top" src="{{i.productsimage_set.all.first.image.url}}" alt="">
                 {% else %}
                 <img height="200" class=" card-img-top" src="images/14pro2.jfif" alt="">
                 {% endif %}

@@ -9,8 +9,8 @@
             <div class="col-4 p-3">
                 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        {% for picture in products.productsimage_set.all  %}
-                        {% if picture == products.productsimage_set.all.first %}
+                        {% for picture in product.productsimage_set.all  %}
+                        {% if picture == product.productsimage_set.all.first %}
                         <div class="carousel-item active thumbnail shadow-sm ">
                             <img class="d-block w-100 " width="400" height="270" src="{{picture.image.url}}" alt="">
                         </div>
@@ -32,11 +32,11 @@
               </div>
             </div>
             <div class="col-7 p-5 ">
-                <h4>{{products.title}}</h4>
-                <p class="text-muted"><a href="{% url 'users:profile' product.author.username  %}">@{{products.author.username}}</a> | 25.01.2023</p>
-                <p >{{products.description|safe}}</p>
+                <h4>{{product.title}}</h4>
+                <p class="text-muted"><a href="{% url 'users:profile' product.author.username  %}">@{{product.author.username}}</a> | 25.01.2023</p>
+                <p >{{product.description|safe}}</p>
                 <div class="contact mt-4 ">
-                    {% if request.user == products.author %}
+                    {% if request.user == product.author %}
                     <a class="btn btn-warning" href="{% url 'products:update' product.id %}">Edit details</a>
                     {% endif %}
                     <a class="btn btn-primary" href="mailto:{{product.author.email}}">Email</a>
@@ -49,8 +49,8 @@
             <div class="col-8 mt-5" >
                 <h6  >In This Category</h6>
                 <div class="d-flex flex-wrap justify-content-between">
-                    {% for i in products.category.products_set.all %}
-                    {% if products != i %}
+                    {% for i in product.category.product_set.all %}
+                    {% if product != i %}
                     <div class="card border border-0 shadow-sm d-inline-block m-1 mt-3" style="width: 14rem;" >
                         <img height="190" class=" card-img-top" src="{{i.productimage_set.all.first.image.url}}" alt="">
                         <div class="card-body">
@@ -73,13 +73,12 @@
                     <button class="btn btn-outline-success" type="submit" id="button-addon">Send</button>
                 </form>
                 <hr>
-
                 <h6>Comments</h6>
-                {% for comment in products.comment_set.all %}
+                {% for comment in product.comment_set.all %}
                 <small class="text-muted" >@{{comment.author}} | {{comment.date}}</small>
                 <p>{{comment.body}}
                     {% if request.user == comment.author %}
-                        <small><a href="">delete</a></small>
+                        <small><a href="{% url 'products:comment_delete' product.id comment.id   %}">delete</a></small>
                     {% endif %}
 
                 </p>
