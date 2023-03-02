@@ -48,12 +48,12 @@ class AddRemoveSavedView(LoginRequiredMixin, View):
     login_url = "login"
     def get(self, request, product_id):
         product = get_object_or_404(Products, id=product_id)
-        saved_product = Saved.objects.filter(author=request.user, product=product)
+        saved_product = Saved.objects.filter(author=request.user, products=product)
         if saved_product:
             saved_product.delete()
             messages.info(request, 'Removed.')
         else:
-            Saved.objects.create(author=request.user, product=product)
+            Saved.objects.create(author=request.user, products=product)
             messages.info(request, 'Saved.')
         return redirect(request.META.get("HTTP_REFERER"))
 
